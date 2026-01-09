@@ -1,0 +1,8 @@
+[package]
+name = "ShimpPip"
+version = "0.0.1"
+edition = "2024"
+
+[dependencies]
+regex = "1"
+pyo3 = { version = "0.20", features = ["auto-initialize"] }

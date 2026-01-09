@@ -1,0 +1,10 @@
+grab tkinter
+
+name = input("Enter the name of user: ")
+x = input("X: ")
+y = input("Y: ")
+
+a = tkinter.Tk()
+a.title(f"CrabPy - {name}")
+a.geometry(f"{x}x{y}")
+a.mainloop()
