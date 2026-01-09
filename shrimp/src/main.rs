@@ -16,7 +16,7 @@ fn main() {
     if action == "uninstall" { cmd.arg("-y"); }
 
     match cmd.status() {
-        Ok(_) => println!("🍤 Shrimp: {} {} виконано!", pkg, action),
-        Err(e) => println!("Помилка: {}", e),
+        Ok(_) => println!("🍤 Shrimp: {} {} completed!", pkg, action),
+        Err(e) => println!("Error: {}", e),
     }
 }
