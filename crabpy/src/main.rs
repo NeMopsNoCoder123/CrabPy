@@ -8,23 +8,21 @@ use pyo3::types::PyDict;
 fn main() -> PyResult<()> {
     let args: Vec<String> = env::args().collect();
     if args.len() < 2 {
-        println!("🦀 CrabPy v1.1 | Developed for High Performance");
-        println!("Використання: crabpy <файл.crpy>");
+        println!("🦀 CrabPy v1.1 | Rust Copiler for python");
+        println!("Usage: crabpy <file.crpy>");
         return Ok(());
     }
 
     let file_path = &args[1];
     let path = Path::new(file_path);
 
-    // Перевірка розширення файлу
     if path.extension().and_then(|s| s.to_str()) != Some("crpy") {
-        println!("❌ Помилка: CrabPy підтримує тільки розширення .crpy");
+        println!("❌ Error: CrabPy support only .crpy extension files.");
         return Ok(());
     }
 
-    let mut code = fs::read_to_string(file_path).expect("Не вдалося прочитати файл");
+    let mut code = fs::read_to_string(file_path).expect("Unsuccessful file read");
 
-    // 1. СЛОВНИК 35 КЕЙВОРДІВ
     let replacements = [
         (r"\bgrab\b", "import"), (r"\bfn\b", "def"), (r"\btrue\b", "True"),
         (r"\bfalse\b", "False"), (r"\bnull\b", "None"), (r"\bask\b", "input"),
@@ -41,13 +39,11 @@ fn main() -> PyResult<()> {
         (r"\bawait\b", "await")
     ];
 
-    // Заміна кейвордів через Regex (тільки окремі слова)
     for (pattern, replacement) in replacements.iter() {
         let re = Regex::new(pattern).unwrap();
         code = re.replace_all(&code, *replacement).to_string();
     }
 
-    // 2. ОБРОБКА СИНТАКСИСУ { } ТА ВІДСТУПІВ
     let mut final_code = String::new();
     let mut indent_level = 0;
 
@@ -55,17 +51,14 @@ fn main() -> PyResult<()> {
         let mut trimmed = line.trim().to_string();
         if trimmed.is_empty() { continue; }
 
-        // Зменшуємо відступ, якщо рядок починається з }
         if trimmed.starts_with('}') {
             indent_level = indent_level.saturating_sub(1);
             trimmed = trimmed[1..].trim().to_string();
         }
 
         if !trimmed.is_empty() {
-            // Додаємо відступи
             final_code.push_str(&"    ".repeat(indent_level));
 
-            // Якщо рядок закінчується на {, міняємо на :
             if trimmed.ends_with('{') {
                 let clean = trimmed.trim_end_matches('{').trim();
                 final_code.push_str(clean);
@@ -78,10 +71,8 @@ fn main() -> PyResult<()> {
         }
     }
 
-    // 3. ЗАПУСК ЧЕРЕЗ PYTHON RUNTIME
     Python::with_gil(|py| {
         let globals = PyDict::new(py);
-        // Забезпечуємо доступ до всіх стандартних функцій Python
         let builtins = py.import("builtins")?;
         globals.set_item("__builtins__", builtins)?;
 
