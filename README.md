@@ -5,7 +5,7 @@
 ![Python](https://img.shields.io/badge/Runtime-Python_3.12-blue?style=for-the-badge&logo=python)
 ![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 
-**CrabPy** is a high-performance programming language (transpiler) that redefines the Python development experience. Built with a lightning-fast **Rust** core, it replaces Python's indentation-based system with a modern curly-brace `{}` syntax while maintaining full compatibility with the Python ecosystem.
+**CrabPy** is a high-performance programming language that redefines the Python development experience. Built with a lightning-fast **Rust** core, it replaces Python's indentation-based system with a modern curly-brace `{}` syntax while maintaining full compatibility with the Python ecosystem.
 
 
 
