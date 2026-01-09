@@ -99,6 +99,17 @@ root.mainloop()
    ```
 3. Your executable ```crabpy.exe``` will be located in ```target/release/```.
 
+4. Executing file ```.crpy```:
+   - Create file ```main.crpy```
+   - Paste example code
+   - Open ```cmd``` or ```powershell```
+   - paste this command:
+     ```bash
+     .\crabpy.exe main.crpy
+     ```
+   - requirements:
+   - builded ```crabpy.exe``` file
+
 ---
 
 ## 🏗 Architecture
