@@ -1,135 +1,150 @@
 # 🦀 CrabPy Programming Language
 
-![Version](https://img.shields.io/badge/version-1.1.0-orange?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-1.5.0-orange?style=for-the-badge)
 ![Rust](https://img.shields.io/badge/Engine-Rust-red?style=for-the-badge&logo=rust)
 ![Python](https://img.shields.io/badge/Runtime-Python_3.12-blue?style=for-the-badge&logo=python)
 ![License](https://img.shields.io/badge/license-MIT-green?style=for-the-badge)
 
-**CrabPy** is a high-performance programming language that redefines the Python development experience. Built with a lightning-fast **Rust** core, it replaces Python's indentation-based system with a modern curly-brace `{}` syntax while maintaining full compatibility with the Python ecosystem.
+A C-style syntax layer on top of Python, powered by Rust.
 
+CrabPy is a lightweight programming language that transpiles a brace-based syntax into valid Python code and executes it using CPython via PyO3. It allows writing Python code using {} blocks instead of indentation.
 
+## How CrabPy Works?
 
----
+CrabPy is not a new virtual machine. It is a transpiler and runtime executor.
 
-## ✨ Key Features
+**Workflow:**
 
-- **No More IndentationErrors:** Structure your code using `{ }` blocks, just like in C++, Rust, or JavaScript.
-- **Powered by Rust:** Lexical analysis and keyword mapping are performed by a native Rust binary for near-instant execution.
-- **Full Library Support:** Import any Python library (`tkinter`, `pygame`, `pandas`, `requests`) using the `grab` keyword.
-- **Modern F-Strings:** Native support for string interpolation: `f"Hello, {name}"`.
-- **Integrated Package Manager:** Manage your dependencies with the built-in `Shrimp` tool.
+- Reads a .crpy file
+- Replaces CrabPy keywords with Python keywords
+- Converts {} blocks into Python indentation
+- Executes the generated Python code using CPython through PyO3
 
----
+You get full Python compatibility with C-style block syntax.
 
-## 🚀 Keyword Mapping (CrabPy Dictionary)
+## 💻Example
 
-We have modernized 35 standard Python keywords to improve the developer experience:
+🦀**CrabPy code:**
+```rust
+grab math
+fn main() {
+  if true {
+    print(math.sqrt(16))
+  }
+}
+```
 
-| CrabPy | Python | Description |
-| :--- | :--- | :--- |
-| `fn` | `def` | Function definition |
-| `grab` | `import` | Import a module |
-| `print` | `print` | Output to console |
-| `ask` | `input` | User input |
-| `true` | `True` | Boolean True |
-| `false` | `False` | Boolean False |
-| `null` | `None` | NoneType / Null |
+🐍**Generated Python:**
+```python
+import math
+def main():
+  if True:
+    print(math.sqrt(16))
+```
 
-*Note: All other standard keywords (`if`, `else`, `for`, `while`, `try`, `class`, etc.) remain the same but utilize `{ }` syntax.*
+## 📱Supported Keywords
 
----
+CrabPy maps directly to Python.
 
-## 📦 Shrimp: Package Manager
+- `grab` → `import`
+- `fn` → `def`
+- `true` → `True`
+- `false` → `False`
+- `null` → `None`
+- `ask` → `input`
+- `class` → `class`
+- `if` / `elif` / `else` → `if` / `elif` / `else`
+- `for` → `for`
+- `while` → `while`
+- `and` / `or` / `not` → `and` / `or` / `not`
+- `return` → `return`
+- `try` / `except` / `finally` → `try` / `except` / `finally`
+- `async` / `await` → `async` / `await`
 
-CrabPy comes with **Shrimp**, a streamlined CLI tool for managing your libraries.
+All other syntax is passed directly to Python.
+
+## 📙Blocks and Syntax
+
+CrabPy🦀 uses curly braces instead of indentation.
+
+**Example:**
+```rust
+fn test() {
+  if true {
+    print("Hello")
+  }
+}
+```
+
+This becomes:
+```python
+def test():
+  if True:
+    print("Hello")
+```
+
+## 💿Running CrabPy
+
+```
+crabpy file.crpy
+```
+
+Only .crpy files are supported.
+
+## Shrimp 🍤
+
+Package manager for CrabPy.
+
+Shrimp is a lightweight wrapper around pip, so CrabPy projects can install Python packages.
+
+### Installing packages
 
 ```bash
-# Install a package
 shrimp net requests
+```
 
-# Remove a package
+This runs:
+```bash
+pip install requests
+```
+
+### Removing packages
+
+```bash
 shrimp toss requests
 ```
 
----
-
-## 💻 Code Example
-
-The example code for test working CrabPy files
-
-```rust
-grab tkinter
-
-fn greet(name) {
-    if name != "" {
-        print(f"Hello, {name}! Welcome to CrabPy.")
-    } else {
-        print("Hello, anonymous!")
-    }
-}
-
-# GUI Setup
-root = tkinter.Tk()
-root.title("CrabPy GUI App")
-
-user_name = ask("What is your name? ")
-greet(user_name)
-
-root.mainloop()
+This runs:
+```bash
+pip uninstall requests -y
 ```
 
----
+## Requirements
 
-## 🔨 Installation & Build
+- Python 3.12+
+- pip
+- Rust
 
-**Prerequisites**
-- **Rust (Cargo)** to compile the core engine.
-- **Python 3.12+** (3.13 recommended) to provide the runtime environment.
-**Building from source**
-1. Clone the repository:
-   ```bash
-   git clone [https://github.com/NeMopsNoCoder123/crabpy.git](https://github.com/NeMopsNoCoder123/crabpy.git)
-   cd crabpy
-   ```
-2. Configure environment and build:
-   ```powershell
-   # Windows (PowerShell)
-   $env:PYO3_USE_ABI3_FORWARD_COMPATIBILITY=1
-   cargo build --release
-   ```
-3. Your executable ```crabpy.exe``` will be located in ```target/release/```.
+## 🧿Current Limitations
 
-4. Executing file ```.crpy```:
-   - Create file ```main.crpy```
-   - Paste example code
-   - Open ```cmd``` or ```powershell```
-   - paste this command:
-     ```bash
-     .\crabpy.exe main.crpy
-     ```
-   - requirements:
-   - builded ```crabpy.exe``` file
+CrabPy uses a regex-based transpiler. There is no full parser, type system, or static analysis. Errors are reported by the Python runtime. However, it is fast, simple, and fully compatible with Python libraries.
 
----
+## 👨‍🎓Philosophy
 
-## 🏗 Architecture
-**CrabPy** operates as a multi-layer **transpiler**:
-1. **Lexical Analysis (Rust)**: Reads the ```.crpy``` file and swaps keywords using optimized Regex patterns.
+CrabPy is Python without indentation. It is built for developers who want Python's ecosystem with C-style syntax.
 
-2. **Indentation Engine**: Analyzes ```{}``` nesting levels and converts them into Python-compliant whitespace.
+## 📢Contributing
 
-3. **PyO3 Bridge**: Utilizes the embedded Python C-API to execute the processed code within a high-performance runtime.
+We welcome contributions to CrabPy! Whether it's bug reports, feature requests, or code contributions, please feel free to open an issue or submit a pull request on our [GitHub repository](https://github.com/NeMopsNoCoder123/CrabPy).
 
----
+### Development Setup
 
-## 📄 License
-**This project** is licensed under the **MIT License**.
+1. Clone the repository
+2. Install Rust and Python
+3. Build the project: `cargo build`
+4. Run tests: `cargo test`
 
-Developed with 🦀 and ⚡ by the **CrabPy MrApocs / NeMopsNoCoder123**.
 
-## 📞 Contact
-**Email**: mrapocscrabpycontact@gmail.com
+## 🧾License
 
-**Discord Channel**: https://discord.gg/VkGqCsFg
-
-**Telegram Channel**: www.t.me/crabpyofficial
+CrabPy use MIT License
